@@ -1,6 +1,6 @@
-# bnfparser.no_actions/CMakeLists.txt
+# ebnfparser.no_actions/CMakeLists.txt
 
-project(bnfparser_no_actions)
+project(ebnfparser_no_actions)
 
 add_subdirectory(grammar)
 add_subdirectory(parser)

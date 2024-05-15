@@ -1,6 +1,6 @@
-#ifndef BNFTOBISON_GUARD_FLEXLEXER_H
-#define BNFTOBISON_GUARD_FLEXLEXER_H
-// bnftobison_guard_flexlexer.h
+#ifndef EBNFTOBISON_LEXER_H
+#define EBNFTOBISON_LEXER_H
+// lexer.h
 
 /*
 MIT License
@@ -26,12 +26,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-// make sure redefinition happens just once using FlexLexer.h macro that guards yyFlexLexer class definition
-#ifndef yyFlexLexerOnce
-#  undef yyFlexLexer
-#  define yyFlexLexer BnfToBisonFlexLexer
-#  include "FlexLexer.h"
-#endif
+#include "ebnftobison.bison.h"
+
+#include "ebnftobison_guard_flexlexer.h"
+
+namespace ebnftobison {
+using namespace std;
+
+class Lexer: public yyFlexLexer {
+public:
+
+// can only declare here since flex generates the implementation
+// dummy parameter because virtual int yyFlexLexer::yylex() cannot be overridden due to conflicting return type
+// would not be a problem if yylex was being generated with some parameters
+  EbnfToBison::symbol_type yylex(location&);
+
+  Lexer() = default;
+
+  explicit Lexer(istream* yyin_arg): yyFlexLexer(yyin_arg) {}
+
+private:
+
+// fix gcc-13 warning -Woverloaded-virtual that virtual int EbnfToBison::yylex() was hidden
+  using yyFlexLexer::yylex;
+  
+};
+
+}
 
 #endif
 

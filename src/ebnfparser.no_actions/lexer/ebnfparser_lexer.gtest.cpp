@@ -1,6 +1,4 @@
-#ifndef BNFPARSER_GUARD_FLEXLEXER_H
-#define BNFPARSER_GUARD_FLEXLEXER_H
-// bnfparser_guard_flexlexer.h
+// ebnfparser_lexer.gtest.cpp
 
 /*
 MIT License
@@ -26,12 +24,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-// make sure redefinition happens just once using FlexLexer.h macro that guards yyFlexLexer class definition
-#ifndef yyFlexLexerOnce
-#  undef yyFlexLexer
-#  define yyFlexLexer BnfParserFlexLexer
-#  include "FlexLexer.h"
-#endif
 
-#endif
+#include <iostream>
+#include <sstream>
+#include <string>
+
+#include <gtest/gtest.h>
+
+#include "ebnfparser_lexer.h"
+#include "ebnfparser.bison.h"
+
+using namespace std;
+using namespace ::testing;
+
+namespace ebnfparser::testing {
+
+TEST(Lexer, test_0) {
+
+  stringstream s("<true literal>");
+  Lexer lexer(&s);
+
+  location loc{};
+
+  auto token = lexer.yylex(loc);
+
+  EXPECT_EQ(token.kind(), EbnfParser::symbol_kind::S_NONTERMINAL);
+}
+
+}
+
 

@@ -1,7 +1,7 @@
-# bnfparser/src/CMakeLists.txt
+# ebnfparser/src/CMakeLists.txt
 
-project(bnfparser_src)
+project(ebnfparser_src)
 
-add_subdirectory(bnfparser.no_actions)
-add_subdirectory(bnftobison)
+add_subdirectory(ebnfparser.no_actions)
+add_subdirectory(ebnftobison)
 
