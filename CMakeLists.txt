@@ -1,8 +1,8 @@
-# bnfparser/CMakeLists.txt
+# ebnfparser/CMakeLists.txt
 
 cmake_minimum_required(VERSION 3.28)
 
-project(bnfparser)
+project(ebnfparser)
 
 add_subdirectory(submodules)
 

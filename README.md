@@ -1,4 +1,4 @@
-# bnfparser
+# ebnfparser
 A Bison grammar and parser for the extended BNF (EBNF) syntax used to specify the GQL language in the ISO-39075 standard
 
 This Bison grammar was written to parse the extended BNF notation used to specify the GQL Graph Query Language in the ISO-39075:2024 standard.
