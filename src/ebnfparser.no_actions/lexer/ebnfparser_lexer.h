@@ -1,4 +1,6 @@
-// bnftobison_lexer.gtest.cpp
+#ifndef EBNFPARSER_NO_ACTIONS_LEXER_H
+#define EBNFPARSER_NO_ACTIONS_LEXER_H
+// lexer.h
 
 /*
 MIT License
@@ -24,33 +26,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include "ebnfparser.bison.h"
 
-#include <iostream>
-#include <sstream>
-#include <string>
+#include "ebnfparser_guard_flexlexer.h"
 
-#include <gtest/gtest.h>
-
-#include "bnftobison_lexer.h"
-#include "bnftobison.bison.h"
-
+namespace ebnfparser {
 using namespace std;
-using namespace ::testing;
 
-namespace bnftobison::testing {
+class Lexer: public yyFlexLexer {
+public:
 
-TEST(Lexer, test_0) {
+// can only declare here since flex generates the implementation
+// dummy parameter because virtual int yyFlexLexer::yylex() cannot be overridden due to conflicting return type
+// would not be a problem if yylex was being generated with some parameters
+  EbnfParser::symbol_type yylex(location&);
 
-  stringstream s("<true literal>");
-  Lexer lexer(&s);
+  Lexer() = default;
 
-  location loc{};
+  explicit Lexer(istream* yyin_arg): yyFlexLexer(yyin_arg) {}
 
-  auto token = lexer.yylex(loc);
+private:
 
-  EXPECT_EQ(token.kind(), BnfToBison::symbol_kind::S_NONTERMINAL);
+// fix gcc-13 warning -Woverloaded-virtual that virtual int EbnfParserFlexLexer::yylex() was hidden
+  using yyFlexLexer::yylex;
+  
+};
+
 }
 
-}
-
+#endif
 

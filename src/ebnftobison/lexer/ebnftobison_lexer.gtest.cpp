@@ -1,4 +1,4 @@
-// bnfparser_lexer.gtest.cpp
+// ebnftobison_lexer.gtest.cpp
 
 /*
 MIT License
@@ -31,13 +31,13 @@ SOFTWARE.
 
 #include <gtest/gtest.h>
 
-#include "bnfparser_lexer.h"
-#include "bnfparser.bison.h"
+#include "ebnftobison_lexer.h"
+#include "ebnftobison.bison.h"
 
 using namespace std;
 using namespace ::testing;
 
-namespace bnfparser::testing {
+namespace ebnftobison::testing {
 
 TEST(Lexer, test_0) {
 
@@ -48,7 +48,7 @@ TEST(Lexer, test_0) {
 
   auto token = lexer.yylex(loc);
 
-  EXPECT_EQ(token.kind(), BnfParser::symbol_kind::S_NONTERMINAL);
+  EXPECT_EQ(token.kind(), EbnfToBison::symbol_kind::S_NONTERMINAL);
 }
 
 }

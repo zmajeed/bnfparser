@@ -1,4 +1,4 @@
-/* bnfparser.flex.l */
+/* ebnftobison/ebnftobison.flex.l */
 
 /*
 MIT License
@@ -24,8 +24,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-/* flex -Cfe -o bnfparser.flex.cpp bnfparser.flex.l */
-/* g++ -O0 -Wall -Wextra -Werror -std=c++2b -o bnfparser.lexer bnfparser.flex.cpp */
+/* flex -Cfe -o ebnftobison.flex.cpp ebnftobison.flex.l */
+/* g++ -O0 -Wall -Wextra -Werror -std=c++23 -o ebnftobison.lexer ebnftobison.flex.cpp */
 
  // flex directives
 
@@ -41,8 +41,8 @@ SOFTWARE.
  // custom C++ lexer classname
 %option yyclass="Lexer"
 
- // custom prefix to turn yyFlexLexer into BnfParserFlexLexer
-%option prefix="BnfParser"
+ // custom prefix to turn yyFlexLexer into EbnfToBisonFlexLexer
+%option prefix="EbnfToBison"
 
 %option debug
 
@@ -69,14 +69,14 @@ SOFTWARE.
 #include <string>
 
 // bison generated header with C++ namespace and token definitions
-#include "bnfparser.bison.h"
+#include "ebnftobison.bison.h"
 
-#include "lexer/bnfparser_lexer.h"
+#include "lexer/ebnftobison_lexer.h"
 
 #undef YY_DECL
 // dummy parameter because yyFlexLexer::yylex(void) in static flex C++ header yyFlexLexer.h cannot be overridden, only overloaded
 // parameter has no name to avoid unused parameter warning
-#define YY_DECL bnfparser::BnfParser::symbol_type bnfparser::Lexer::yylex(location& loc)
+#define YY_DECL ebnftobison::EbnfToBison::symbol_type ebnftobison::Lexer::yylex(location& loc)
 
 // fix flex error could not convert 0 from int to symbol_type for #define YY_NULL 0
 // caused by turning on bison %locations because symbol_type no longer has single int constructor for implicit conversion
@@ -84,11 +84,11 @@ SOFTWARE.
 
 using namespace std;
 
-using namespace bnfparser;
-using token = bnfparser::BnfParser::token::token_kind_type;
+using namespace ebnftobison;
+using token = ebnftobison::EbnfToBison::token::token_kind_type;
 
 // needed for custom yyterminate
-using symbol_type = BnfParser::symbol_type;
+using symbol_type = EbnfToBison::symbol_type;
 
 %}
 
@@ -104,7 +104,7 @@ using symbol_type = BnfParser::symbol_type;
 ^"<"[-A-Za-z0-9 _/]+">" {
   BEGIN(RULES);
   loc.columns(yyleng);
-  return BnfParser::make_NONTERMINAL(yytext, loc);
+  return EbnfToBison::make_NONTERMINAL(yytext, loc);
 }
 
  /* everything above first rule is header */
@@ -117,7 +117,7 @@ using symbol_type = BnfParser::symbol_type;
 \n {
   loc.lines();
   headerLine += yytext;
-  return BnfParser::make_HEADER_LINE(headerLine, loc);
+  return EbnfToBison::make_HEADER_LINE(headerLine, loc);
 }
 
  /* patterns for rules body of grammar */
@@ -128,74 +128,74 @@ using symbol_type = BnfParser::symbol_type;
   "<"[-A-Za-z0-9 _/]+">"[ ]*::= {
     BEGIN(RULE_START);
     yyless(0);
-    return BnfParser::make_RULE_SEPARATOR(loc);
+    return EbnfToBison::make_RULE_SEPARATOR(loc);
   }
 
  /* rematch start of rule that was matched earlier */
   <RULE_START>"<"[-A-Za-z0-9 _/]+">" {
     BEGIN(RULES);
     loc.columns(yyleng);
-    return BnfParser::make_NONTERMINAL(yytext, loc);
+    return EbnfToBison::make_NONTERMINAL(yytext, loc);
   }
 
  /* match rule assignment operator */
   ::= {
     loc.columns(yyleng);
-    return BnfParser::make_COLON_EQUAL(loc);
+    return EbnfToBison::make_COLON_EQUAL(loc);
   }
 
  /* assumes multiline string literals are not allowed */
   (?x: ["] ( [^"\n] | \\["] | \\\\ )* ["] ) {
     loc.columns(yyleng);
-    return BnfParser::make_LITERAL(yytext, loc);
+    return EbnfToBison::make_LITERAL(yytext, loc);
   }
 
  /* assumes typical identifier syntax for grammar token */
   [A-Za-z0-9_]+ {
     loc.columns(yyleng);
-    return BnfParser::make_TOKEN(yytext, loc);
+    return EbnfToBison::make_TOKEN(yytext, loc);
   }
 
  /* alternative operator */
   "|" {
     loc.columns(yyleng);
-    return BnfParser::make_BAR(loc);
+    return EbnfToBison::make_BAR(loc);
   }
 
  /* start of optional operator */
   "[" {
     loc.columns(yyleng);
-    return BnfParser::make_LEFT_BRACKET(loc);
+    return EbnfToBison::make_LEFT_BRACKET(loc);
   }
 
  /* end of optional operator */
   "]" {
     loc.columns(yyleng);
-    return BnfParser::make_RIGHT_BRACKET(loc);
+    return EbnfToBison::make_RIGHT_BRACKET(loc);
   }
 
  /* start of group operator */
   "{" {
     loc.columns(yyleng);
-    return BnfParser::make_LEFT_BRACE(loc);
+    return EbnfToBison::make_LEFT_BRACE(loc);
   }
 
  /* end of group operator */
   "}" {
     loc.columns(yyleng);
-    return BnfParser::make_RIGHT_BRACE(loc);
+    return EbnfToBison::make_RIGHT_BRACE(loc);
   }
 
  /* repetition operator */
   "..." {
     loc.columns(yyleng);
-    return BnfParser::make_ELLIPSIS(loc);
+    return EbnfToBison::make_ELLIPSIS(loc);
   }
 
  /* start of comment to end of line */
   "!!".* {
     loc.columns(yyleng);
-    return BnfParser::make_COMMENT(yytext, loc);
+    return EbnfToBison::make_COMMENT(yytext, loc);
   }
 
  /* match newlines separately to correctly update line numbers */
@@ -213,6 +213,6 @@ using symbol_type = BnfParser::symbol_type;
  /* all input must be consumed in every state to prevent flex scanner jammed error */
 <*>. {
   loc.columns(yyleng);
-  throw BnfParser::syntax_error(loc, "bad input \""s + yytext + "\""s);
+  throw EbnfToBison::syntax_error(loc, "bad input \""s + yytext + "\""s);
 }
 

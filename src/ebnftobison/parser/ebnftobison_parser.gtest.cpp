@@ -1,4 +1,4 @@
-// bnftobison.gtest.cpp
+// ebnftobison.gtest.cpp
 
 /*
 MIT License
@@ -30,16 +30,16 @@ SOFTWARE.
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include "lexer/bnftobison_lexer.h"
-#include "bnftobison.bison.h"
+#include "lexer/ebnftobison_lexer.h"
+#include "ebnftobison.bison.h"
 
 using namespace std;
 
 using namespace ::testing;
 
-namespace bnftobison::testing {
+namespace ebnftobison::testing {
 
-TEST(BnfToBison, test_0) {
+TEST(EbnfToBison, test_0) {
 
   stringstream s("<true literal> ::= TRUE");
   Lexer lexer(&s);
@@ -47,7 +47,7 @@ TEST(BnfToBison, test_0) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -62,7 +62,7 @@ TEST(BnfToBison, test_0) {
   EXPECT_THAT(result, UnorderedElementsAreArray( (map<string, set<vector<string>>>{ {"true_literal", { {"TRUE"} } } }) ));
 }
 
-TEST(BnfToBison, test_1) {
+TEST(EbnfToBison, test_1) {
 
   stringstream s(R"%(<true literal> ::=
   TRUE
@@ -75,7 +75,7 @@ TEST(BnfToBison, test_1) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -90,7 +90,7 @@ TEST(BnfToBison, test_1) {
   EXPECT_THAT(result, UnorderedElementsAreArray( (map<string, set<vector<string>>>{ {"true_literal", { {"TRUE"}, {"FALSE"}, {"UNKNOWN"} } } }) ));
 }
 
-TEST(BnfToBison, test_2) {
+TEST(EbnfToBison, test_2) {
 
   stringstream s("<nested query specification> ::= <left brace> <query specification> <right brace>");
 
@@ -99,7 +99,7 @@ TEST(BnfToBison, test_2) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -113,7 +113,7 @@ TEST(BnfToBison, test_2) {
   EXPECT_THAT(result, UnorderedElementsAreArray( (map<string, set<vector<string>>>{ {"nested_query_specification", { {"left_brace", "query_specification", "right_brace"} } } }) ));
 }
 
-TEST(BnfToBison, test_3) {
+TEST(EbnfToBison, test_3) {
 
   stringstream s(R"%(
 <GQL-program> ::=
@@ -126,7 +126,7 @@ TEST(BnfToBison, test_3) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -150,7 +150,7 @@ TEST(BnfToBison, test_3) {
   }) ));
 }
 
-TEST(BnfToBison, test_4) {
+TEST(EbnfToBison, test_4) {
 
   stringstream s(R"%(
 <session activity> ::=
@@ -162,7 +162,7 @@ TEST(BnfToBison, test_4) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -191,7 +191,7 @@ TEST(BnfToBison, test_4) {
   }) ));
 }
 
-TEST(BnfToBison, test_5) {
+TEST(EbnfToBison, test_5) {
 
   stringstream s(R"%(
 <session activity> ::=
@@ -204,7 +204,7 @@ TEST(BnfToBison, test_5) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -242,7 +242,7 @@ TEST(BnfToBison, test_5) {
   }) ));
 }
 
-TEST(BnfToBison, test_6) {
+TEST(EbnfToBison, test_6) {
 
   stringstream s(R"%(
 <session activity> ::=
@@ -254,7 +254,7 @@ TEST(BnfToBison, test_6) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -292,7 +292,7 @@ TEST(BnfToBison, test_6) {
   }) ));
 }
 
-TEST(BnfToBison, test_7) {
+TEST(EbnfToBison, test_7) {
 
   stringstream s(R"%(
 <session activity> ::=
@@ -305,7 +305,7 @@ TEST(BnfToBison, test_7) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -344,7 +344,7 @@ TEST(BnfToBison, test_7) {
   }) ));
 }
 
-TEST(BnfToBison, test_8) {
+TEST(EbnfToBison, test_8) {
 
   stringstream s(R"%(
 <transaction characteristics> ::=
@@ -356,7 +356,7 @@ TEST(BnfToBison, test_8) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -377,7 +377,7 @@ TEST(BnfToBison, test_8) {
   }) ));
 }
 
-TEST(BnfToBison, test_9) {
+TEST(EbnfToBison, test_9) {
 
   stringstream s(R"%(
 <transaction characteristics> ::=
@@ -389,7 +389,7 @@ TEST(BnfToBison, test_9) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -418,7 +418,7 @@ TEST(BnfToBison, test_9) {
   }) ));
 }
 
-TEST(BnfToBison, test_10) {
+TEST(EbnfToBison, test_10) {
 
   stringstream s(R"%(
 <transaction characteristics> ::=
@@ -430,7 +430,7 @@ TEST(BnfToBison, test_10) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -460,7 +460,7 @@ TEST(BnfToBison, test_10) {
   }) ));
 }
 
-TEST(BnfToBison, test_11) {
+TEST(EbnfToBison, test_11) {
 
   stringstream s(R"%(
 <create graph statement> ::=
@@ -473,7 +473,7 @@ TEST(BnfToBison, test_11) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -495,7 +495,7 @@ TEST(BnfToBison, test_11) {
   }) ));
 }
 
-TEST(BnfToBison, test_12) {
+TEST(EbnfToBison, test_12) {
 
   stringstream s(R"%(
 <create graph statement> ::=
@@ -508,7 +508,7 @@ TEST(BnfToBison, test_12) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -535,7 +535,7 @@ TEST(BnfToBison, test_12) {
   }) ));
 }
 
-TEST(BnfToBison, test_13) {
+TEST(EbnfToBison, test_13) {
 
   stringstream s(R"%(
 <create graph statement> ::=
@@ -549,7 +549,7 @@ TEST(BnfToBison, test_13) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -576,7 +576,7 @@ TEST(BnfToBison, test_13) {
   }) ));
 }
 
-TEST(BnfToBison, test_14) {
+TEST(EbnfToBison, test_14) {
 
   stringstream s(R"%(
 <create graph statement> ::=
@@ -591,7 +591,7 @@ TEST(BnfToBison, test_14) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -626,7 +626,7 @@ TEST(BnfToBison, test_14) {
   }) ));
 }
 
-TEST(BnfToBison, test_15) {
+TEST(EbnfToBison, test_15) {
 
   stringstream s(R"%(
 <create graph statement> ::=
@@ -642,7 +642,7 @@ TEST(BnfToBison, test_15) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -693,7 +693,7 @@ TEST(BnfToBison, test_15) {
   }) ));
 }
 
-TEST(BnfToBison, test_16) {
+TEST(EbnfToBison, test_16) {
 
   stringstream s(R"%(
 <delete statement> ::=
@@ -706,7 +706,7 @@ TEST(BnfToBison, test_16) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -729,7 +729,7 @@ TEST(BnfToBison, test_16) {
   }) ));
 }
 
-TEST(BnfToBison, test_17) {
+TEST(EbnfToBison, test_17) {
 
   stringstream s(R"%(
 <exists predicate> ::=
@@ -745,7 +745,7 @@ TEST(BnfToBison, test_17) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -770,7 +770,7 @@ TEST(BnfToBison, test_17) {
   }) ));
 }
 
-TEST(BnfToBison, test_18) {
+TEST(EbnfToBison, test_18) {
 
   stringstream s(R"%(
 <transaction activity> ::=
@@ -783,7 +783,7 @@ TEST(BnfToBison, test_18) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -806,7 +806,7 @@ TEST(BnfToBison, test_18) {
   }) ));
 }
 
-TEST(BnfToBison, test_19) {
+TEST(EbnfToBison, test_19) {
 
   stringstream s(R"%(
 <session set command> ::=
@@ -821,7 +821,7 @@ TEST(BnfToBison, test_19) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -845,7 +845,7 @@ TEST(BnfToBison, test_19) {
   }) ));
 }
 
-TEST(BnfToBison, test_20) {
+TEST(EbnfToBison, test_20) {
 
   stringstream s(R"%(
 <single quoted character representation> ::=
@@ -858,7 +858,7 @@ TEST(BnfToBison, test_20) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -880,7 +880,7 @@ TEST(BnfToBison, test_20) {
   }) ));
 }
 
-TEST(BnfToBison, test_21) {
+TEST(EbnfToBison, test_21) {
 
   stringstream s(R"%(
 <double single quote> ::=
@@ -893,7 +893,7 @@ TEST(BnfToBison, test_21) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -914,7 +914,7 @@ TEST(BnfToBison, test_21) {
   }) ));
 }
 
-TEST(BnfToBison, test_22) {
+TEST(EbnfToBison, test_22) {
 
   stringstream s(R"%(
 <GQL-program> ::=
@@ -931,7 +931,7 @@ TEST(BnfToBison, test_22) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -962,7 +962,7 @@ TEST(BnfToBison, test_22) {
   }) ));
 }
 
-TEST(BnfToBison, test_23) {
+TEST(EbnfToBison, test_23) {
 
   stringstream s(R"%(
 
@@ -982,7 +982,7 @@ TEST(BnfToBison, test_23) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -1013,7 +1013,7 @@ TEST(BnfToBison, test_23) {
   }) ));
 }
 
-TEST(BnfToBison, test_24) {
+TEST(EbnfToBison, test_24) {
 
   stringstream s(R"%(
 <implementation-defined access mode> ::=
@@ -1026,7 +1026,7 @@ TEST(BnfToBison, test_24) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -1045,7 +1045,7 @@ TEST(BnfToBison, test_24) {
   }) ));
 }
 
-TEST(BnfToBison, test_25) {
+TEST(EbnfToBison, test_25) {
 
   stringstream s(R"%(
 <implementation-defined access mode> ::=
@@ -1061,7 +1061,7 @@ TEST(BnfToBison, test_25) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -1087,7 +1087,7 @@ TEST(BnfToBison, test_25) {
   }) ));
 }
 
-TEST(BnfToBison, test_26) {
+TEST(EbnfToBison, test_26) {
 
   stringstream s(R"%(
 <pre-reserved word> ::=
@@ -1104,7 +1104,7 @@ TEST(BnfToBison, test_26) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -1127,7 +1127,7 @@ TEST(BnfToBison, test_26) {
   }) ));
 }
 
-TEST(BnfToBison, test_27) {
+TEST(EbnfToBison, test_27) {
 
   stringstream s(R"%(
 <pre-reserved word> ::=
@@ -1144,7 +1144,7 @@ TEST(BnfToBison, test_27) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -1156,7 +1156,7 @@ TEST(BnfToBison, test_27) {
   EXPECT_EQ(result.size(), 0);
 }
 
-TEST(BnfToBison, test_28) {
+TEST(EbnfToBison, test_28) {
 
   stringstream s(R"%(
 <space> ::=
@@ -1168,7 +1168,7 @@ TEST(BnfToBison, test_28) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -1189,7 +1189,7 @@ TEST(BnfToBison, test_28) {
   }) ));
 }
 
-TEST(BnfToBison, test_29) {
+TEST(EbnfToBison, test_29) {
 
   stringstream s(R"%(
 <right brace> ::=
@@ -1201,7 +1201,7 @@ TEST(BnfToBison, test_29) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -1222,7 +1222,7 @@ TEST(BnfToBison, test_29) {
   }) ));
 }
 
-TEST(BnfToBison, test_30) {
+TEST(EbnfToBison, test_30) {
 
   stringstream s(R"%(
 <reverse solidus> ::=
@@ -1237,7 +1237,7 @@ TEST(BnfToBison, test_30) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -1265,7 +1265,7 @@ TEST(BnfToBison, test_30) {
   }) ));
 }
 
-TEST(BnfToBison, test_31) {
+TEST(EbnfToBison, test_31) {
 
   stringstream s("<a> := b");
 
@@ -1274,7 +1274,7 @@ TEST(BnfToBison, test_31) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfToBison parser([&lexer](location& loc) -> BnfToBison::symbol_type {
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,

@@ -1,6 +1,6 @@
-# bnftobison/src/CMakeLists.txt
+# ebnftobison/src/CMakeLists.txt
 
-project(bnftobison_src)
+project(ebnftobison_src)
 
 add_subdirectory(grammar)
 add_subdirectory(parser)

@@ -1,28 +1,28 @@
-# bnfparser.no_actions/parser/CMakeLists.txt
+# ebnftobison/parser/CMakeLists.txt
 
-project(bnfparser_no_actions_bison)
+project(ebnftobison_parser)
 
 # standalone parser
-add_executable(bnfparse ${BNFPARSER_BISON_CPP_FILE})
-target_compile_definitions(bnfparse PRIVATE BUILD_MAIN)
-target_link_libraries(bnfparse ${FLEXBISONLIB})
+add_executable(ebnftobison ${EBNFTOBISON_BISON_CPP_FILE})
+target_compile_definitions(ebnftobison PRIVATE BUILD_MAIN)
+target_link_libraries(ebnftobison ${FLEXBISONLIB})
 
 if(CYGWIN)
-  target_compile_definitions(bnfparse PRIVATE GTEST_HAS_PTHREAD=1 _POSIX_C_SOURCE=200809L)
+  target_compile_definitions(ebnftobison PRIVATE GTEST_HAS_PTHREAD=1 _POSIX_C_SOURCE=200809L)
 endif()
 if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
-  target_compile_options(bnfparse PRIVATE -Wall -Werror -Wextra -O0 -ggdb -std=c++23 -pthread)
+  target_compile_options(ebnftobison PRIVATE -Wall -Werror -Wextra -O0 -ggdb -std=c++23 -pthread)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
 # ranges library cannot take -Wall -WX
-  target_compile_options(bnfparse PRIVATE -Od)
+  target_compile_options(ebnftobison PRIVATE -Od)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES Clang)
-  target_compile_definitions(bnfparse PRIVATE _SILENCE_CLANG_CONCEPTS_MESSAGE)
+  target_compile_definitions(ebnftobison PRIVATE _SILENCE_CLANG_CONCEPTS_MESSAGE)
 endif()
 
 # tests
-set(TESTNAME bnfparser.bison.gtest)
+set(TESTNAME ebnftobison_parser.gtest)
 
-add_executable(${TESTNAME} bnfparser.bison.gtest.cpp)
+add_executable(${TESTNAME} ebnftobison_parser.gtest.cpp)
 
 if(CYGWIN)
   target_compile_definitions(${TESTNAME} PRIVATE GTEST_HAS_PTHREAD=1 _POSIX_C_SOURCE=200809L)

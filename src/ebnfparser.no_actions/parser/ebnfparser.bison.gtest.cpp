@@ -1,4 +1,4 @@
-// bnfparser.gtest.cpp
+// ebnfparser.gtest.cpp
 
 /*
 MIT License
@@ -29,14 +29,14 @@ SOFTWARE.
 
 #include <gtest/gtest.h>
 
-#include "lexer/bnfparser_lexer.h"
-#include "bnfparser.bison.h"
+#include "lexer/ebnfparser_lexer.h"
+#include "ebnfparser.bison.h"
 
 using namespace std;
 
 using namespace ::testing;
 
-namespace bnfparser::testing {
+namespace ebnfparser::testing {
 
 TEST(BisonParser, test_0) {
 
@@ -46,7 +46,7 @@ TEST(BisonParser, test_0) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -68,7 +68,7 @@ TEST(BisonParser, test_1) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -86,7 +86,7 @@ TEST(BisonParser, test_2) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -108,7 +108,7 @@ TEST(BisonParser, test_3) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -130,7 +130,7 @@ TEST(BisonParser, test_4) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -151,7 +151,7 @@ TEST(BisonParser, test_5) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -176,7 +176,7 @@ TEST(BisonParser, test_6) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -198,7 +198,7 @@ TEST(BisonParser, test_7) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -223,7 +223,7 @@ TEST(BisonParser, test_8) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -245,7 +245,7 @@ TEST(BisonParser, test_9) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -269,7 +269,7 @@ TEST(BisonParser, test_10) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -291,7 +291,7 @@ TEST(BisonParser, test_11) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -313,7 +313,7 @@ TEST(BisonParser, test_12) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -339,7 +339,7 @@ TEST(BisonParser, test_13) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -368,7 +368,7 @@ TEST(BisonParser, test_14) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -390,7 +390,7 @@ TEST(BisonParser, test_15) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -415,7 +415,7 @@ TEST(BisonParser, test_16) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -441,7 +441,7 @@ TEST(BisonParser, test_17) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -462,7 +462,7 @@ TEST(BisonParser, test_18) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -483,7 +483,7 @@ TEST(BisonParser, test_19) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -507,7 +507,7 @@ TEST(BisonParser, test_20) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
@@ -525,7 +525,7 @@ TEST(BisonParser, test_21) {
   location loc{};
   BisonParam bisonParam;
 
-  BnfParser parser([&lexer](location& loc) -> BnfParser::symbol_type {
+  EbnfParser parser([&lexer](location& loc) -> EbnfParser::symbol_type {
     return lexer.yylex(loc);
   },
   bisonParam,
