@@ -69,6 +69,21 @@ header: %empty | header_lines
 header_lines: HEADER_LINE | header_lines HEADER_LINE
 ```
 
+## Build
+
+Build with `cmake` then `make`
+
+```
+cmake -B build -S .
+
+make -C build
+```
+
+Run the converter `ebnftobison`
+```
+build/src/ebnftobison/parser/ebnftobison docs/gqlgrammar.quotedliterals.txt
+```
+
 ## Examples
 
 Nonterminal names are made valid for Bison. Surrounding angle brackets are removed. Any characters not in [a-zA-Z0-9_] are replaced with underscores.
