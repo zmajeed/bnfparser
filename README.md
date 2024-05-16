@@ -41,7 +41,7 @@ Even though the grammar for GQL EBNF is specific to ISO-39075, its features are 
 
 ## A Grammar for EBNF
 
-This is the grammar without semantic actions at `src/ebnfparser.no_actions/grammar/ebnfparser.bison.y`. The same grammar with code to convert EBNF to BNF is in `src/bnftobison/grammar`
+This is the grammar without semantic actions at `[src/ebnfparser.no_actions/grammar/ebnfparser.bison.y](src/ebnfparser.no_actions/grammar/ebnfparser.bison.y)`. The same grammar with code to convert EBNF to BNF is in `[src/bnftobison/grammar](src/bnftobison/grammar)`
 
 ```
 ebnf: header rule | header rule rules
@@ -109,7 +109,7 @@ ctest --test-dir build
 
 ## Source Structure
 
-Source code under `src/` is divided into a parser without semantic actions in `src/ebnfparser.no_actions/` and a parser that converts EBNF to Bison rules in `src/ebnftopbison/`. Both directories have the Bison and Flex rules files in `grammar/`. Parser tests and standalone parser executables are in `parser/`. The lexer class and tests are in `lexer/`.
+Source code under `[src/](src/)` is divided into a parser without semantic actions in `[src/ebnfparser.no_actions/](src/ebnfparser.no_actions/)` and a parser that converts EBNF to Bison rules in `[src/ebnftopbison/](src/ebnftopbison/)`. Both directories have the Bison and Flex rules files in `[grammar/](grammar/)`. Parser tests and standalone parser executables are in `[parser/](parser/)`. The lexer class and tests are in `[lexer/](lexer/)`.
 
 The GQL grammar is in `docs`.
 
