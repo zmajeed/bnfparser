@@ -41,6 +41,8 @@ Even though the grammar for GQL EBNF is specific to ISO-39075, its features are 
 
 ## A Grammar for EBNF
 
+This is the grammar without semantic actions at `src/ebnfparser.no_actions/grammar/ebnfparser.bison.y`. The same grammar with code to convert EBNF to BNF is in `src/bnftobison/grammar`
+
 ```
 ebnf: header rule | header rule rules
 
@@ -85,6 +87,8 @@ alternative: production_combo "|" concatenation
 
 ## Build And Test
 
+The repo has a submodule dependency on GoogleTest that should be initialized with `git submodule update --init --recursive`
+
 Build with `cmake` then `make`
 
 ```
@@ -98,10 +102,16 @@ Run the converter `ebnftobison`
 build/src/ebnftobison/parser/ebnftobison docs/gqlgrammar.quotedliterals.txt
 ```
 
-Test with ctest
+Run unit tests with `ctest`
 ```
 ctest --test-dir build
 ```
+
+## Source Structure
+
+Source code under `src/` is divided into a parser without semantic actions in `src/ebnfparser.no_actions/` and a parser that converts EBNF to Bison rules in `src/ebnftopbison/`. Both directories have the Bison and Flex rules files in `grammar/`. Parser tests and standalone parser executables are in `parser/`. The lexer class and tests are in `lexer/`.
+
+The GQL grammar is in `docs`.
 
 ## Examples
 
