@@ -39,3 +39,167 @@ The differences between ISO_IEC_39075(en).bnf.txt and docs/gqlgrammar.txt are
 
 Even though the grammar for GQL EBNF is specific to ISO-39075, its features are typical of other extended BNF syntaxes. It should be easy to modify to represent other EBNF notations.
 
+
+## Examples
+
+Nonterminal names are made valid for Bison. Surrounding angle brackets are removed. Any characters not in [a-zA-Z0-9_] are replaced with underscores.
+
+Input EBNF
+```
+<nested query specification> ::=
+    <left brace> <query specification> <right brace>
+```
+Output BNF
+```
+nested_query_specification:
+  left_brace  query_specification  right_brace
+```
+
+Input EBNF
+```
+<binding variable definition> ::=
+    <graph variable definition>
+  | <binding table variable definition>
+  | <value variable definition>
+```
+Output BNF
+```
+binding_variable_definition:
+  binding_table_variable_definition
+|  graph_variable_definition
+|  value_variable_definition
+```
+
+Each optional expression splits a production into two. One with the expression, the other without
+Input EBNF
+```
+<next statement> ::=
+    NEXT [ <yield clause> ] <statement>
+```
+Output BNF
+```
+next_statement:
+  NEXT  statement
+|  NEXT  yield_clause  statement
+```
+
+Optional expressions can be nested
+Input EBNF
+```
+<opt typed graph initializer> ::=
+    [ [ <typed> ] <graph reference value type> ] <graph initializer>
+```
+Output BNF
+```
+opt_typed_graph_initializer:
+  graph_initializer
+|  graph_reference_value_type  graph_initializer
+|  typed  graph_reference_value_type  graph_initializer
+```
+
+A nonterminal with repetition is replaced with a new nonterminal with the same name plus a "\_list" suffix. Also a new left-recursive rule is created that generates one or more of the original nonterminal.
+Input EBNF
+```
+<binding variable definition block> ::=
+    <binding variable definition>...
+```
+Output BNF
+```
+binding_variable_definition_block:
+  binding_variable_definition_list
+
+binding_variable_definition_list:
+  binding_variable_definition
+|  binding_variable_definition_list  binding_variable_definition
+```
+Here's an example of an optional repetition of a single nonterminal
+Input EBNF
+```
+<statement block> ::=
+    <statement> [ <next statement>... ]
+```
+Output BNF
+```
+statement_block:
+  statement
+|  statement  next_statement_list
+
+next_statement_list:
+  next_statement
+|  next_statement_list  next_statement
+```
+Groups are expanded by distributing the expression outside the group over the expressions inside the group
+Input EBNF
+```
+<session set command> ::=
+    SESSION SET { <session set schema clause>
+  | <session set graph clause>
+  | <session set time zone clause>
+  | <session set parameter clause> }
+```
+Output BNF
+```
+session_set_command:
+  SESSION  SET  session_set_graph_clause
+|  SESSION  SET  session_set_parameter_clause
+|  SESSION  SET  session_set_schema_clause
+|  SESSION  SET  session_set_time_zone_clause
+```
+
+Repetition on a group is different based on whether it's a concatenation group or a group of alternative. Repetition of a concatenation group is transformed similarly to repetition of a symbol. A left-recursive rule is created to derive infinite sequences of the expression. The name of the new nonterminal is formed by joining the names of the elements in the expression with underscores and adding a "\_list" suffix.
+Input EBNF
+```
+<transaction characteristics> ::=
+    <transaction mode> [ { <comma> <transaction mode> }... ]
+```
+Output BNF
+```
+comma_transaction_mode_list:
+  comma  transaction_mode
+|  comma_transaction_mode_list  comma  transaction_mode
+
+transaction_characteristics:
+  transaction_mode
+|  transaction_mode  comma_transaction_mode_list
+```
+Here's an example of a group with optionals on both sides of an alternative.
+Input EBNF
+```
+<create graph type statement> ::=
+    CREATE
+         { [ PROPERTY ] GRAPH TYPE [ IF NOT EXISTS ]
+  | OR REPLACE [ PROPERTY ] GRAPH TYPE }
+         <catalog graph type parent and name> <graph type source>
+```
+Output BNF
+```
+create_graph_type_statement:
+  CREATE  GRAPH  TYPE  IF  NOT  EXISTS  catalog_graph_type_parent_and_name  graph_type_source
+|  CREATE  GRAPH  TYPE  catalog_graph_type_parent_and_name  graph_type_source
+|  CREATE  OR  REPLACE  GRAPH  TYPE  catalog_graph_type_parent_and_name  graph_type_source
+|  CREATE  OR  REPLACE  PROPERTY  GRAPH  TYPE  catalog_graph_type_parent_and_name  graph_type_source
+|  CREATE  PROPERTY  GRAPH  TYPE  IF  NOT  EXISTS  catalog_graph_type_parent_and_name  graph_type_source
+|  CREATE  PROPERTY  GRAPH  TYPE  catalog_graph_type_parent_and_name  graph_type_source
+```
+
+Repetition on group of alternative generates two new nonterminals and rules. First the group is replaced with a new nonterminal for the group. Then the single new nonterminal is replaced with another new nonterminal for a list.
+Input EBNF
+```
+<separator> ::=
+    { <comment>
+  | <whitespace> }...
+```
+Output BNF
+```
+separator:
+  choice_group_0_list
+
+choice_group_0_list:
+  choice_group_0
+| choice_group_0_list choice_group_0
+
+choice_group_0:
+  comment
+| whitespace
+```
+
