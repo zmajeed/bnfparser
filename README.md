@@ -39,6 +39,35 @@ The differences between ISO_IEC_39075(en).bnf.txt and docs/gqlgrammar.txt are
 
 Even though the grammar for GQL EBNF is specific to ISO-39075, its features are typical of other extended BNF syntaxes. It should be easy to modify to represent other EBNF notations.
 
+## EBNF Grammar As BNF For Bison
+
+```
+ebnf: header rule | header rule rules
+
+rules: RULE_SEPARATOR rule | rules RULE_SEPARATOR rule
+
+rule: NONTERMINAL "::=" production_combos
+
+production_combos: concatenation | alternative | COMMENT
+
+production: element | optional | repetition | group
+
+element: NONTERMINAL | TOKEN | LITERAL | NONTERMINAL COMMENT | TOKEN COMMENT
+
+concatenation: production | concatenation production
+
+alternative: production_combos "|" concatenation
+
+optional: "[" production_combos "]"
+
+repetition: element "..." | group "..." | optional "..."
+
+group: "{" production_combos "}"
+
+header: %empty | header_lines
+
+header_lines: HEADER_LINE | header_lines HEADER_LINE
+```
 
 ## Examples
 

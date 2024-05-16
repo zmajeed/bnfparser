@@ -172,13 +172,13 @@ void ebnfparser::EbnfParser::error(const location& loc, const string& msg) {
 %token <string> COMMENT
 %token <string> HEADER_LINE
 
-%start eebnf
+%start ebnf
 
 %%
 
 // no code allowed in rules section, just bison comments that are dropped from .cpp
 
-eebnf: header rule postprocess | header rule rules postprocess
+ebnf: header rule postprocess | header rule rules postprocess
 
 rules: RULE_SEPARATOR rule | rules RULE_SEPARATOR rule
 
