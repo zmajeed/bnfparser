@@ -202,13 +202,13 @@ void ebnftobison::EbnfToBison::error(const location& loc, const string& msg) {
 %nterm <Rule> rule
 %nterm <Rule> rules
 
-%start eebnf
+%start ebnf
 
 %%
 
 // no code allowed in rules section, just bison comments that are dropped from .cpp
 
-eebnf: header rule {
+ebnf: header rule {
   bisonParam.result.merge($rule);
 } postprocess
 | header rule rules {
