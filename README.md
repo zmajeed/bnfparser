@@ -39,16 +39,16 @@ The differences between ISO_IEC_39075(en).bnf.txt and docs/gqlgrammar.txt are
 
 Even though the grammar for GQL EBNF is specific to ISO-39075, its features are typical of other extended BNF syntaxes. It should be easy to modify to represent other EBNF notations.
 
-## EBNF Grammar As BNF For Bison
+## A Grammar for EBNF
 
 ```
 ebnf: header rule | header rule rules
 
 rules: RULE_SEPARATOR rule | rules RULE_SEPARATOR rule
 
-rule: NONTERMINAL "::=" production_combos
+rule: NONTERMINAL "::=" production_combo
 
-production_combos: concatenation | alternative | COMMENT
+production_combo: concatenation | alternative | COMMENT
 
 production: element | optional | repetition | group
 
@@ -56,20 +56,34 @@ element: NONTERMINAL | TOKEN | LITERAL | NONTERMINAL COMMENT | TOKEN COMMENT
 
 concatenation: production | concatenation production
 
-alternative: production_combos "|" concatenation
+alternative: production_combo "|" concatenation
 
-optional: "[" production_combos "]"
+optional: "[" production_combo "]"
 
 repetition: element "..." | group "..." | optional "..."
 
-group: "{" production_combos "}"
+group: "{" production_combo "}"
 
 header: %empty | header_lines
 
 header_lines: HEADER_LINE | header_lines HEADER_LINE
 ```
 
-## Build
+The grammar recognizes `COMMENT` tokens in a few positions that correspond to where comments actually appear in the GQL grammar. If comments don't need to be preserved or transformed, then the COMMENT token can be completely dropped. On the other hand COMMENT tokens can be added to all or some positions as needed or every token can be turned into an object that has an optional comment field.
+
+The GQL grammar has some header lines at the beginning of the file - these are accounted for by the `header` nonterminal.
+
+The `RULE_SEPARATOR` token is not an actual character or string. Rather it's a token returned by the lexer when the start of a new rule is detected.
+
+The two binary operators, `concatenation` and `alternative`, are left-associative by virtue of left-recursive sequence rules.
+
+Also `concatenation` has higher precedence than `alternative` because `alternative` derives from `concatenation` by the rule
+
+```
+alternative: production_combo "|" concatenation
+```
+
+## Build And Test
 
 Build with `cmake` then `make`
 
@@ -84,9 +98,14 @@ Run the converter `ebnftobison`
 build/src/ebnftobison/parser/ebnftobison docs/gqlgrammar.quotedliterals.txt
 ```
 
+Test with ctest
+```
+ctest --test-dir build
+```
+
 ## Examples
 
-Nonterminal names are made valid for Bison. Surrounding angle brackets are removed. Any characters not in [a-zA-Z0-9_] are replaced with underscores.
+Nonterminal names are made valid for Bison. Surrounding angle brackets are removed. Any characters not in `[a-zA-Z0-9_]` are replaced with underscores.
 
 Input EBNF
 ```

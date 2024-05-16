@@ -24,5 +24,4 @@ target_link_libraries(${TESTNAME} ${FLEXBISONLIB} gmock_main)
 
 enable_testing()
 include(GoogleTest)
-
-
+gtest_discover_tests(${TESTNAME} EXTRA_ARGS --gtest_color=yes)
