@@ -83,7 +83,7 @@ Also `concatenation` has higher precedence than `alternative` because `alternati
 alternative: production_combo "|" concatenation
 ```
 
-## Build
+## Build And Test
 
 Build with `cmake` then `make`
 
@@ -96,6 +96,11 @@ make -C build
 Run the converter `ebnftobison`
 ```
 build/src/ebnftobison/parser/ebnftobison docs/gqlgrammar.quotedliterals.txt
+```
+
+Test with ctest
+```
+ctest --test-dir build
 ```
 
 ## Examples
