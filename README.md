@@ -115,6 +115,7 @@ binding_variable_definition:
 ```
 
 Each optional expression splits a production into two. One with the expression, the other without
+
 Input EBNF
 ```
 <next statement> ::=
@@ -128,6 +129,7 @@ next_statement:
 ```
 
 Optional expressions can be nested
+
 Input EBNF
 ```
 <opt typed graph initializer> ::=
@@ -142,6 +144,7 @@ opt_typed_graph_initializer:
 ```
 
 A nonterminal with repetition is replaced with a new nonterminal with the same name plus a "\_list" suffix. Also a new left-recursive rule is created that generates one or more of the original nonterminal.
+
 Input EBNF
 ```
 <binding variable definition block> ::=
@@ -157,6 +160,7 @@ binding_variable_definition_list:
 |  binding_variable_definition_list  binding_variable_definition
 ```
 Here's an example of an optional repetition of a single nonterminal
+
 Input EBNF
 ```
 <statement block> ::=
@@ -173,6 +177,7 @@ next_statement_list:
 |  next_statement_list  next_statement
 ```
 Groups are expanded by distributing the expression outside the group over the expressions inside the group
+
 Input EBNF
 ```
 <session set command> ::=
@@ -191,6 +196,7 @@ session_set_command:
 ```
 
 Repetition on a group is different based on whether it's a concatenation group or a group of alternative. Repetition of a concatenation group is transformed similarly to repetition of a symbol. A left-recursive rule is created to derive infinite sequences of the expression. The name of the new nonterminal is formed by joining the names of the elements in the expression with underscores and adding a "\_list" suffix.
+
 Input EBNF
 ```
 <transaction characteristics> ::=
@@ -207,6 +213,7 @@ transaction_characteristics:
 |  transaction_mode  comma_transaction_mode_list
 ```
 Here's an example of a group with optionals on both sides of an alternative.
+
 Input EBNF
 ```
 <create graph type statement> ::=
@@ -227,6 +234,7 @@ create_graph_type_statement:
 ```
 
 Repetition on group of alternative generates two new nonterminals and rules. First the group is replaced with a new nonterminal for the group. Then the single new nonterminal is replaced with another new nonterminal for a list.
+
 Input EBNF
 ```
 <separator> ::=
