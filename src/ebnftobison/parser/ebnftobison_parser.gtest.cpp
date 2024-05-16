@@ -1286,5 +1286,189 @@ TEST(EbnfToBison, test_31) {
   EXPECT_EQ(result.size(), 0);
 }
 
+TEST(EbnfToBison, test_32) {
+
+  stringstream s(R"%(
+<separator> ::=
+    { <comment>
+  | <whitespace> }...
+)%");
+
+  Lexer lexer(&s);
+
+  location loc{};
+  BisonParam bisonParam;
+
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
+    return lexer.yylex(loc);
+  },
+  bisonParam,
+  loc);
+
+  auto& result = bisonParam.result;
+
+  EXPECT_EQ(parser(), 0);
+  EXPECT_EQ(result.size(), 3);
+  EXPECT_TRUE(result.contains("separator"));
+  EXPECT_TRUE(result.contains("choice_group_0_list"));
+  EXPECT_TRUE(result.contains("choice_group_0"));
+  EXPECT_THAT(result, UnorderedElementsAreArray( (map<string, set<vector<string>>>{
+    {
+      "separator",
+      {
+        {"choice_group_0_list"},
+      }
+    },
+    {
+      "choice_group_0_list",
+      {
+        {"choice_group_0"},
+        {"choice_group_0_list", "choice_group_0"},
+      }
+    },
+    {
+      "choice_group_0",
+      {
+        {"comment"},
+        {"whitespace"},
+      }
+    },
+  }) ));
+}
+
+TEST(EbnfToBison, test_33) {
+
+  stringstream s(R"%(
+<x> ::= <a> <b> | <c>
+)%");
+
+  Lexer lexer(&s);
+
+  location loc{};
+  BisonParam bisonParam;
+
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
+    return lexer.yylex(loc);
+  },
+  bisonParam,
+  loc);
+
+  auto& result = bisonParam.result;
+
+  EXPECT_EQ(parser(), 0);
+  EXPECT_EQ(result.size(), 1);
+  EXPECT_TRUE(result.contains("x"));
+  EXPECT_THAT(result, UnorderedElementsAreArray( (map<string, set<vector<string>>>{
+    {
+      "x",
+      {
+        {"a", "b"},
+        {"c"},
+      }
+    },
+  }) ));
+}
+
+TEST(EbnfToBison, test_34) {
+
+  stringstream s(R"%(
+<x> ::= <a> | <b> <c>
+)%");
+
+  Lexer lexer(&s);
+
+  location loc{};
+  BisonParam bisonParam;
+
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
+    return lexer.yylex(loc);
+  },
+  bisonParam,
+  loc);
+
+  auto& result = bisonParam.result;
+
+  EXPECT_EQ(parser(), 0);
+  EXPECT_EQ(result.size(), 1);
+  EXPECT_TRUE(result.contains("x"));
+  EXPECT_THAT(result, UnorderedElementsAreArray( (map<string, set<vector<string>>>{
+    {
+      "x",
+      {
+        {"a"},
+        {"b", "c"},
+      }
+    },
+  }) ));
+}
+
+TEST(EbnfToBison, test_35) {
+
+  stringstream s(R"%(
+<x> ::= <a> | <b> <c> | <d>
+)%");
+
+  Lexer lexer(&s);
+
+  location loc{};
+  BisonParam bisonParam;
+
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
+    return lexer.yylex(loc);
+  },
+  bisonParam,
+  loc);
+
+  auto& result = bisonParam.result;
+
+  EXPECT_EQ(parser(), 0);
+  EXPECT_EQ(result.size(), 1);
+  EXPECT_TRUE(result.contains("x"));
+  EXPECT_THAT(result, UnorderedElementsAreArray( (map<string, set<vector<string>>>{
+    {
+      "x",
+      {
+        {"a"},
+        {"b", "c"},
+        {"d"},
+      }
+    },
+  }) ));
+}
+
+TEST(EbnfToBison, test_36) {
+
+  stringstream s(R"%(
+<x> ::= <a> <b> | <c> <d> | <e>
+)%");
+
+  Lexer lexer(&s);
+
+  location loc{};
+  BisonParam bisonParam;
+
+  EbnfToBison parser([&lexer](location& loc) -> EbnfToBison::symbol_type {
+    return lexer.yylex(loc);
+  },
+  bisonParam,
+  loc);
+
+  auto& result = bisonParam.result;
+
+  EXPECT_EQ(parser(), 0);
+  EXPECT_EQ(result.size(), 1);
+  EXPECT_TRUE(result.contains("x"));
+  EXPECT_THAT(result, UnorderedElementsAreArray( (map<string, set<vector<string>>>{
+    {
+      "x",
+      {
+        {"a", "b"},
+        {"c", "d"},
+        {"e"},
+      }
+    },
+  }) ));
+}
+
 }
 

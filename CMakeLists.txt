@@ -8,3 +8,4 @@ add_subdirectory(submodules)
 
 add_subdirectory(src)
 
+enable_testing()

@@ -77,6 +77,14 @@ using namespace chrono;
 using Production = set<vector<string>>;
 using Rule = map<string, set<vector<string>>>;
 
+struct Combo {
+  enum class Type {
+    concatenation,
+    alternative
+  } comboType;
+  Production production;
+};
+
 struct BisonParam {
   struct Stats {
     duration<double> parseTimeTakenSec;
@@ -155,6 +163,7 @@ using namespace chrono;
 
 namespace {
   const auto defaultInputName = "inputstream"s;
+  uint64_t groupNumber;
 }
 
 void ebnftobison::EbnfToBison::error(const location& loc, const string& msg) {
@@ -172,6 +181,8 @@ void ebnftobison::EbnfToBison::error(const location& loc, const string& msg) {
   if(loc.begin.filename == nullptr) {
     loc.initialize(&defaultInputName);
   }
+
+  groupNumber = 0;
 }
 
 %token COLON_EQUAL          "::="
@@ -197,8 +208,9 @@ void ebnftobison::EbnfToBison::error(const location& loc, const string& msg) {
 %nterm <Production> alternative
 %nterm <Production> optional
 %nterm <Production> repetition
-%nterm <Production> group
-%nterm <Production> production_combos
+%nterm <Combo> group
+%nterm <Combo> production_combo
+
 %nterm <Rule> rule
 %nterm <Rule> rules
 
@@ -225,13 +237,21 @@ rules: RULE_SEPARATOR rule {
 }
 ;
 
-rule: NONTERMINAL "::=" production_combos {
+rule: NONTERMINAL "::=" production_combo {
   ++bisonParam.stats.numRulesParsed;
   auto underscoresName = regex_replace($NONTERMINAL.substr(1, $NONTERMINAL.length() - 2), regex{"[^a-zA-Z0-9_]"}, "_");
-  $$ = { {underscoresName, $production_combos} };
+  $$ = { {underscoresName, $production_combo.production} };
 }
 
-production_combos: concatenation | alternative | COMMENT {}
+production_combo: concatenation {
+  $$ = {.comboType = Combo::Type::concatenation, .production = $concatenation};
+}
+| alternative {
+  $$ = {.comboType = Combo::Type::alternative, .production = $alternative};
+}
+| COMMENT {
+}
+;
 
 production: element {
   $$ = { {$element} };
@@ -244,7 +264,7 @@ production: element {
   $$ = $repetition;
 }
 | group {
-  $$ = $group;
+  $$ = $group.production;
 }
 ;
 
@@ -273,20 +293,19 @@ concatenation: production {
 }
 ;
 
-alternative: production_combos "|" concatenation {
-  $$ = $production_combos;
+alternative: production_combo "|" concatenation {
+  $$ = $production_combo.production;
   $$.merge($concatenation);
 }
 
-optional: "[" production_combos "]" {
-  $$ = $production_combos;
+optional: "[" production_combo "]" {
+  $$ = $production_combo.production;
   $$.merge(set<vector<string>>{{}});
 }
 ;
 
 // replace ellipsis repetition with new left-recursive rule to generate infinite sequences
-repetition:
-  element "..." {
+repetition: element "..." {
   auto listRuleName = $element + "_list"s;
 // left-recursive list rule for element elt
 // elt_list: elt | elt_list elt
@@ -294,24 +313,39 @@ repetition:
   $$ = { {listRuleName} };
 }
 | group "..." {
-  string listRuleName;
-  for(auto& v: $group) {
-    for(auto& e: v) {
-      listRuleName += e + "_";
+  if($group.comboType == Combo::Type::concatenation) {
+    string listRuleName;
+    for(auto& v: $group.production) {
+      for(auto& e: v) {
+        listRuleName += e + "_";
+      }
+      listRuleName += "list";
+      auto w = v;
+      w.insert(w.begin(), listRuleName);
+      bisonParam.result[listRuleName] = { v, w };
+      $$.insert({listRuleName});
     }
-    listRuleName += "list";
-    auto w = v;
-    w.insert(w.begin(), listRuleName);
-    bisonParam.result[listRuleName] = { v, w };
-    $$.insert({listRuleName});
+  } else {
+// groups are replaced by new single nonterminal
+// move all productions of group to new rule for new nonterminal
+    stringstream s;
+    s << "choice_group_" << groupNumber;
+    string groupName = s.str();
+    ++groupNumber;
+    bisonParam.result[groupName] = $group.production;
+    $group.production = { {groupName} };
+
+    auto listRuleName = groupName + "_list";
+    bisonParam.result[listRuleName] = { {groupName}, {listRuleName, groupName} };
+    $$ = { {listRuleName} };
   }
 }
 | optional "..." {
 }
 ;
 
-group: "{" production_combos "}" {
-  $$ = $production_combos;
+group: "{" production_combo "}" {
+  $$ = $production_combo;
 }
 ;
 

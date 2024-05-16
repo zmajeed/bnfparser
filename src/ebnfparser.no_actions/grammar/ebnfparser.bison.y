@@ -182,9 +182,9 @@ ebnf: header rule postprocess | header rule rules postprocess
 
 rules: RULE_SEPARATOR rule | rules RULE_SEPARATOR rule
 
-rule: NONTERMINAL "::=" production_combos
+rule: NONTERMINAL "::=" production_combo
 
-production_combos: concatenation | alternative | COMMENT
+production_combo: concatenation | alternative | COMMENT
 
 production: element | optional | repetition | group
 
@@ -192,13 +192,13 @@ element: NONTERMINAL | TOKEN | LITERAL | NONTERMINAL COMMENT | TOKEN COMMENT
 
 concatenation: production | concatenation production
 
-alternative: production_combos "|" concatenation
+alternative: production_combo "|" concatenation
 
-optional: "[" production_combos "]"
+optional: "[" production_combo "]"
 
 repetition: element "..." | group "..." | optional "..."
 
-group: "{" production_combos "}"
+group: "{" production_combo "}"
 
 header: %empty | header_lines
 

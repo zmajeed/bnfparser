@@ -6,3 +6,4 @@ add_subdirectory(grammar)
 add_subdirectory(parser)
 add_subdirectory(lexer)
 
+enable_testing()
