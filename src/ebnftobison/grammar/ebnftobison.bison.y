@@ -193,7 +193,6 @@ void ebnftobison::EbnfToBison::error(const location& loc, const string& msg) {
 %token ELLIPSIS             "..."
 %token BAR                  "|"
 
-%token WHITESPACE
 %token RULE_SEPARATOR
 
 %token <string> NONTERMINAL
@@ -203,11 +202,13 @@ void ebnftobison::EbnfToBison::error(const location& loc, const string& msg) {
 %token <string> HEADER_LINE
 
 %nterm <string> element
+
 %nterm <Production> production
 %nterm <Production> concatenation
 %nterm <Production> alternative
 %nterm <Production> optional
 %nterm <Production> repetition
+
 %nterm <Combo> group
 %nterm <Combo> production_combo
 

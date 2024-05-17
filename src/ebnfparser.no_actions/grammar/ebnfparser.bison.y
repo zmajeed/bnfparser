@@ -163,7 +163,6 @@ void ebnfparser::EbnfParser::error(const location& loc, const string& msg) {
 %token ELLIPSIS             "..."
 %token BAR                  "|"
 
-%token WHITESPACE
 %token RULE_SEPARATOR
 
 %token <string> NONTERMINAL
