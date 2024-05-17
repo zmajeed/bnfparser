@@ -185,13 +185,13 @@ rule: NONTERMINAL "::=" production_combo
 
 production_combo: concatenation | alternative | COMMENT
 
-production: element | optional | repetition | group
-
-element: NONTERMINAL | TOKEN | LITERAL | NONTERMINAL COMMENT | TOKEN COMMENT
-
 concatenation: production | concatenation production
 
 alternative: production_combo "|" concatenation
+
+production: element | optional | repetition | group
+
+element: NONTERMINAL | TOKEN | LITERAL | NONTERMINAL COMMENT | TOKEN COMMENT
 
 optional: "[" production_combo "]"
 

@@ -85,7 +85,6 @@ SOFTWARE.
 using namespace std;
 
 using namespace ebnftobison;
-using token = ebnftobison::EbnfToBison::token::token_kind_type;
 
 // needed for custom yyterminate
 using symbol_type = EbnfToBison::symbol_type;

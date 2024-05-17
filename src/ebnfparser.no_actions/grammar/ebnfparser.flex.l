@@ -85,7 +85,6 @@ SOFTWARE.
 using namespace std;
 
 using namespace ebnfparser;
-using token = ebnfparser::EbnfParser::token::token_kind_type;
 
 // needed for custom yyterminate
 using symbol_type = EbnfParser::symbol_type;

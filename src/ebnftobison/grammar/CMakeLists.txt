@@ -5,7 +5,6 @@ project(ebnftobison_grammar)
 find_package(FLEX)
 find_package(BISON)
 
-
 # generated source filename should match .l filename
 flex_target(flex_files ebnftobison.flex.l ${CMAKE_CURRENT_BINARY_DIR}/ebnftobison.flex.cpp COMPILE_FLAGS -f)
 
@@ -24,4 +23,3 @@ add_library(${FLEXBISONLIB} STATIC ${FLEX_flex_files_OUTPUTS} ${BISON_bison_file
 target_compile_definitions(${FLEXBISONLIB} PRIVATE _POSIX_C_SOURCE=200809L)
 target_compile_options(${FLEXBISONLIB} PRIVATE -Wall -Werror -Wextra -O0 -ggdb -std=c++23 -pthread)
 target_include_directories(${FLEXBISONLIB} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries(${FLEXBISONLIB})
