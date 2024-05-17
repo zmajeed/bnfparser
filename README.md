@@ -33,7 +33,7 @@ I could not find a BNF or Bison grammar for GQL when I wrote this parser. The pa
 The differences between ISO_IEC_39075(en).bnf.txt and docs/gqlgrammar.txt are
 
 - Literal strings and characters are quoted
-- A stray alternative operator in the rule for <pre-reserved word> has been deleted
+- A stray alternative operator in the rule for `<pre-reserved word>` has been deleted
 - The definition of `<space>` has been corrected to U+0020 from U+00A0
 - A superfluous pair of group brackets has been removed
 
