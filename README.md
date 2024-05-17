@@ -34,9 +34,10 @@ The differences between ISO_IEC_39075(en).bnf.txt and docs/gqlgrammar.txt are
 
 - Literal strings and characters are quoted
 - A stray alternative operator in the rule for <pre-reserved word> has been deleted
-- The definition of <space> has been corrected to U+0020 from U+00A0
+- The definition of `<space>` has been corrected to U+0020 from U+00A0
+- A superfluous pair of group brackets has been removed
 
-Even though the grammar for GQL EBNF is specific to ISO-39075, its features are typical of other extended BNF syntaxes. It should be easy to modify to represent other EBNF notations.
+The EBNF defined for GQL in ISO-39075 is the same as that used for SQL in ISO-9075. As far as I can tell it is unique to these two standards and hasn't been used anywhere else. But its features are typical of other extended BNF syntaxes. It should be straightforward to modify the grammar and parser in this repo to convert other EBNF notations to BNF.
 
 ## A Grammar for EBNF
 
@@ -232,13 +233,13 @@ Input EBNF
 ```
 Output BNF
 ```
-comma_transaction_mode_list:
-  comma  transaction_mode
-|  comma_transaction_mode_list  comma  transaction_mode
-
 transaction_characteristics:
   transaction_mode
 |  transaction_mode  comma_transaction_mode_list
+
+comma_transaction_mode_list:
+  comma  transaction_mode
+|  comma_transaction_mode_list  comma  transaction_mode
 ```
 Here's an example of a group with optionals on both sides of an alternative.
 
