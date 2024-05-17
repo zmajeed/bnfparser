@@ -254,6 +254,27 @@ production_combo: concatenation {
 }
 ;
 
+concatenation: production {
+  $$ = $production;
+}
+| concatenation production {
+  auto i = 0;
+  for(const auto& v: $1) {
+    for(const auto& w: $production) {
+      auto joined = v;
+      joined.insert(joined.end(), w.begin(), w.end());
+      $$.insert(joined);
+      ++i;
+    }
+  }
+}
+;
+
+alternative: production_combo "|" concatenation {
+  $$ = $production_combo.production;
+  $$.merge($concatenation);
+}
+
 production: element {
   $$ = { {$element} };
 
@@ -277,27 +298,6 @@ element: NONTERMINAL {
 }
 | TOKEN COMMENT
 ;
-
-concatenation: production {
-  $$ = $production;
-}
-| concatenation production {
-  auto i = 0;
-  for(const auto& v: $1) {
-    for(const auto& w: $production) {
-      auto joined = v;
-      joined.insert(joined.end(), w.begin(), w.end());
-      $$.insert(joined);
-      ++i;
-    }
-  }
-}
-;
-
-alternative: production_combo "|" concatenation {
-  $$ = $production_combo.production;
-  $$.merge($concatenation);
-}
 
 optional: "[" production_combo "]" {
   $$ = $production_combo.production;
